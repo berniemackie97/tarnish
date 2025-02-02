@@ -88,6 +88,28 @@ public class AdminCommandPlugin extends CommandExtension {
             }
         });
 
+        commands.add(new Command("credits") {
+            @Override
+            public void execute(Player player, CommandParser parser) {
+                if (parser.hasNext()) {
+                    StringBuilder name = new StringBuilder(parser.nextString());
+                    while (parser.hasNext() && !parser.peek().matches("\\d+")) {
+                        name.append(" ").append(parser.nextString());
+                    }
+                    World.search(name.toString()).ifPresentOrElse(target -> {
+                        int amount = parser.nextInt();
+                        // Add the credits to the player's donation system
+                        target.donation.setCredits(target.donation.getCredits() + amount); // Adjust to your method for adding credits
+                        player.message("Successfully added " + amount + " credits to " + target.getUsername() + ".");
+                        target.message("You have received " + amount + " donator credits!");
+                    }, () -> player.message("Could not find player with the username: " + name));
+                } else {
+                    player.message("Invalid command usage. Correct format: ::credits <username> <amount>");
+                }
+            }
+        });
+
+
         commands.add(new Command("demote") {
             @Override
             public void execute(Player player, CommandParser parser) {

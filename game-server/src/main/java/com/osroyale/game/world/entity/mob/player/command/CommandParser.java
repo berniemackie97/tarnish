@@ -101,6 +101,13 @@ public final class CommandParser {
         return builder.toString().trim();
     }
 
+    public String peek() {
+        if (pointer >= arguments.length) {
+            throw new ArrayIndexOutOfBoundsException("No more arguments to peek.");
+        }
+        return arguments[pointer];
+    }
+
     public int argumentCount() {
         return arguments.length;
     }
